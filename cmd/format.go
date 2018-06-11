@@ -15,7 +15,7 @@ func OutputMarkdownTable(matches []*match.Match) {
 	table.SetBorders(tablewriter.Border{Left: true, Top: false, Right: true, Bottom: false})
 	table.SetCenterSeparator("|")
 	for _, m := range matches {
-		score := fmt.Sprintf("%d:%d", m.Team1Score, m.Team2Score)
+		score := fmt.Sprintf("%d-%d", m.Team1Score, m.Team2Score)
 		table.Append([]string{m.Team1Name, score, m.Team2Name})
 	}
 	table.Render()
