@@ -1,0 +1,8 @@
+language: go
+go:
+  - 1.8.x
+  - 1.10.x
+before_install: go get ./...
+script: go test ./...
+notifications:
+  email: false

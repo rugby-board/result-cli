@@ -1,9 +1,11 @@
 package retriever
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 
-	"github.com/rugby/result-cli/match"
+	"github.com/rugby-board/result-cli/match"
 )
 
 // Retriever struct
@@ -17,12 +19,20 @@ func NewRetriever() *Retriever {
 }
 
 // Init initialize HTTP client
-func Init(r *Retriever) error {
+func (r *Retriever) Init() error {
 	r.client = &http.Client{}
 	return nil
 }
 
 // Retrieve results
-func Retrieve(r *Retriever) error, match.Match {
-	return nil
+func (r *Retriever) Retrieve(url string) ([]*match.Match, error) {
+	m := make([]*match.Match, 0)
+	resp, err := r.client.Get(url)
+	if err != nil {
+		return m, err
+	}
+	defer resp.Body.Close()
+	err = json.NewDecoder(resp.Body).Decode(&m)
+	fmt.Println(m)
+	return m, err
 }
