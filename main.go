@@ -39,5 +39,5 @@ func getDate() (string, string) {
 
 func usage() {
 	fmt.Println("result-cli v1.0")
-	fmt.Println("result-cli -")
+	fmt.Println("result-cli -id=[EVENT_ID]")
 }
