@@ -1,5 +1,7 @@
 # result-cli
 
+![travis](https://travis-ci.org/rugby-board/result-cli.svg?branch=master)
+
 Rugby match result retriever in Go.
 
 ## Usage
