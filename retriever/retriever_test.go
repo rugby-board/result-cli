@@ -6,7 +6,7 @@ import (
 
 func TestRetriever(t *testing.T) {
 	r := NewRetriever()
-	if r.Init() != nil {
+	if r.Init("../conf/conf.yaml") != nil {
 		t.Error("Init retriever failed")
 	}
 	m, err := r.Retrieve(205, "2017-06-11", "2018-06-11")

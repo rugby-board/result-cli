@@ -27,9 +27,9 @@ func NewRetriever() *Retriever {
 }
 
 // Init initialize HTTP client
-func (r *Retriever) Init() error {
+func (r *Retriever) Init(confPath string) error {
 	r.client = &http.Client{}
-	yamlFile, err := ioutil.ReadFile("conf/conf.yaml")
+	yamlFile, err := ioutil.ReadFile(confPath)
 	if err != nil {
 		log.Printf("Read file failed: %#v", err)
 		return err

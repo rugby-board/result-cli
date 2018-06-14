@@ -12,13 +12,15 @@ import (
 
 var eventID int
 
+const defaultConfFile = "conf/conf.yaml"
+
 func main() {
 	flag.IntVar(&eventID, "id", 0, "Event ID for Kratos")
 	flag.Usage = usage
 	flag.Parse()
 
 	r := retriever.NewRetriever()
-	r.Init()
+	r.Init(defaultConfFile)
 	realEventID := int32(eventID)
 	dateStart, dateEnd := getDate()
 	if match.ValidEvent(realEventID) {
