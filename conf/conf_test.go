@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-const defaultConfFile = "conf.yaml"
+const defaultConfFile = "conf/conf.yaml"
 
 func TestGetConf(t *testing.T) {
 	c, err := GetConf(defaultConfFile)
