@@ -3,9 +3,9 @@ package retriever
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
-	"code.byted.org/gopkg/pkg/log"
 	"github.com/rugby-board/result-cli/conf"
 	"github.com/rugby-board/result-cli/match"
 )
