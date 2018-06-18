@@ -3,22 +3,17 @@ package retriever
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"log"
 	"net/http"
 
+	"code.byted.org/gopkg/pkg/log"
+	"github.com/rugby-board/result-cli/conf"
 	"github.com/rugby-board/result-cli/match"
-	yaml "gopkg.in/yaml.v2"
 )
 
 // Retriever struct
 type Retriever struct {
 	client  *http.Client
 	baseURL string
-}
-
-type conf struct {
-	BaseURL string `yaml:"base_url"`
 }
 
 // NewRetriever returns a Retriever
@@ -29,18 +24,11 @@ func NewRetriever() *Retriever {
 // Init initialize HTTP client
 func (r *Retriever) Init(confPath string) error {
 	r.client = &http.Client{}
-	yamlFile, err := ioutil.ReadFile(confPath)
+	confBody, err := conf.GetConf(confPath)
 	if err != nil {
-		log.Printf("Read file failed: %#v", err)
-		return err
+		log.Fatalf("Read file failed: %#v", err)
 	}
-	c := &conf{}
-	err = yaml.Unmarshal(yamlFile, c)
-	if err != nil {
-		log.Printf("Unmarshal failed: %#v", err)
-		return err
-	}
-	r.baseURL = c.BaseURL
+	r.baseURL = confBody.BaseURL
 	return nil
 }
 
