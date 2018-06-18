@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	dict "github.com/rugby-board/go-rugby-dict"
 	"github.com/rugby-board/result-cli/cmd"
 	"github.com/rugby-board/result-cli/match"
 	"github.com/rugby-board/result-cli/retriever"
@@ -25,6 +26,22 @@ func main() {
 	dateStart, dateEnd := getDate()
 	if match.ValidEvent(realEventID) {
 		m, _ := r.Retrieve(realEventID, dateStart, dateEnd)
+		d := dict.NewDict("dict.yaml")
+		err := d.Load()
+		if err != nil {
+			fmt.Println("Load dict failed")
+		}
+		var trans string
+		for _, item := range m {
+			trans, err = d.Query(item.Team1Name)
+			if err == nil {
+				item.Team1Name = fmt.Sprintf("%s %s", trans, item.Team1Name)
+			}
+			trans, err = d.Query(item.Team2Name)
+			if err == nil {
+				item.Team2Name = fmt.Sprintf("%s %s", trans, item.Team2Name)
+			}
+		}
 		cmd.OutputMarkdownTable(m)
 	} else {
 		fmt.Println("Invalid event ID")
