@@ -26,7 +26,7 @@ func main() {
 	dateStart, dateEnd := getDate()
 	if match.ValidEvent(realEventID) {
 		m, _ := r.Retrieve(realEventID, dateStart, dateEnd)
-		d := dict.NewDict("dict.yaml")
+		d := dict.NewDefaultDict()
 		err := d.Load()
 		if err != nil {
 			fmt.Println("Load dict failed")
