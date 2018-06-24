@@ -11,7 +11,7 @@ It is rather simple by now, only allows query with EventID for results from last
 
 ```
 $ go get github.com/rugby-board/result-cli
-$ result-cli -id=209
+$ result-cli -id=209 -days=3
 ```
 
 ## API

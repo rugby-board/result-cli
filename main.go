@@ -11,20 +11,23 @@ import (
 	"github.com/rugby-board/result-cli/retriever"
 )
 
-var eventID int
+var eventID, daysBefore int
 
 const defaultConfFile = "conf/conf.yaml"
 
 func main() {
 	flag.IntVar(&eventID, "id", 0, "Event ID for Kratos")
+	flag.IntVar(&daysBefore, "days", 7, "Days before")
 	flag.Usage = usage
 	flag.Parse()
 
 	r := retriever.NewRetriever()
 	r.Init(defaultConfFile)
 	realEventID := int32(eventID)
-	dateStart, dateEnd := getDate()
+	dateStart, dateEnd := getDate(daysBefore)
+	fmt.Printf("Event ID: %d, From %d days before:\n\n", realEventID, daysBefore)
 	if match.ValidEvent(realEventID) {
+		fmt.Printf("Fetching...\n\n")
 		m, _ := r.Retrieve(realEventID, dateStart, dateEnd)
 		d := dict.NewDefaultDict()
 		err := d.Load()
@@ -48,15 +51,21 @@ func main() {
 	}
 }
 
-func getDate() (string, string) {
+func getDate(daysBefore int) (string, string) {
 	year, month, day := time.Now().Date()
 	dateEnd := fmt.Sprintf("%d-%d-%d", year, month, day)
-	year, month, day = time.Now().AddDate(0, 0, -7).Date()
+	year, month, day = time.Now().AddDate(0, 0, -daysBefore).Date()
 	dateStart := fmt.Sprintf("%d-%d-%d", year, month, day)
 	return dateStart, dateEnd
 }
 
 func usage() {
-	fmt.Println("result-cli v1.0")
-	fmt.Println("result-cli -id=[EVENT_ID]")
+	fmt.Printf("result-cli v%s\n", version())
+	fmt.Println("Rugby match result retriever")
+	fmt.Println("")
+	fmt.Println("result-cli -id=[EVENT_ID] -days=[DAYS]")
+}
+
+func version() string {
+	return "1.1.0"
 }
