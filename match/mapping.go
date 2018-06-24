@@ -45,6 +45,8 @@ func ValidEvent(eventID int32) bool {
 		return true
 	} else if eventID == AngloWelshCup {
 		return true
+	} else if eventID == Mitre10Cup {
+		return true
 	} else if eventID == SixNations {
 		return true
 	} else if eventID == RugbyWorldCup {
