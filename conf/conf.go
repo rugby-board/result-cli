@@ -36,16 +36,17 @@ func GetConf(confPath string) (*Body, error) {
 	c := &Body{}
 	realConfPath, err := LoadEnvConfPath(confPath)
 	if err != nil {
-		log.Fatalf("Get real conf path failed: %#v", err)
+		log.Printf("Get real conf path failed: %#v", err)
+		return c, err
 	}
 	yamlFile, err := ioutil.ReadFile(realConfPath)
 	if err != nil {
-		log.Fatalf("Read file failed: %#v", err)
+		log.Printf("Read file failed: %#v", err)
 		return c, err
 	}
 	err = yaml.Unmarshal(yamlFile, c)
 	if err != nil {
-		log.Fatalf("Unmarshal failed: %#v", err)
+		log.Printf("Unmarshal failed: %#v", err)
 		return c, err
 	}
 	return c, err

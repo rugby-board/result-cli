@@ -15,3 +15,10 @@ func TestGetConf(t *testing.T) {
 		t.Error("Base url test failed")
 	}
 }
+
+func TestLoadYamlFail(t *testing.T) {
+	_, err := GetConf("conf/not_existed.yaml")
+	if err == nil {
+		t.Error("Should load yaml failed")
+	}
+}
