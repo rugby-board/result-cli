@@ -25,8 +25,8 @@ func main() {
 	r.Init(defaultConfFile)
 	realEventID := int32(eventID)
 	dateStart, dateEnd := getDate(daysBefore)
-	fmt.Printf("Event ID: %d, From %d days before:\n\n", realEventID, daysBefore)
 	if match.ValidEvent(realEventID) {
+		fmt.Printf("Event ID: %d, From %d days before:\n\n", realEventID, daysBefore)
 		fmt.Printf("Fetching...\n\n")
 		m, _ := r.Retrieve(realEventID, dateStart, dateEnd)
 		d := dict.NewDefaultDict()
@@ -67,5 +67,5 @@ func usage() {
 }
 
 func version() string {
-	return "1.1.0"
+	return "1.2.1"
 }
