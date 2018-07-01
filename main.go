@@ -11,7 +11,10 @@ import (
 	"github.com/rugby-board/result-cli/retriever"
 )
 
-var eventID, daysBefore int
+var (
+	eventID    int
+	daysBefore int
+)
 
 const defaultConfFile = "conf/conf.yaml"
 
