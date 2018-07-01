@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	dict "github.com/rugby-board/go-rugby-dict"
+	"github.com/rugby-board/go-rugby-dict/dict"
 	"github.com/rugby-board/result-cli/cmd"
 	"github.com/rugby-board/result-cli/match"
 	"github.com/rugby-board/result-cli/retriever"
