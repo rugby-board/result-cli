@@ -9,9 +9,9 @@ It is rather simple by now, only allows query with EventID for results from last
 
 ## Usage
 
-```
-$ go get github.com/rugby-board/result-cli
-$ result-cli -id=209 -days=3
+```shell
+go get github.com/rugby-board/result-cli
+result-cli -id=209 -days=3
 ```
 
 ## API
@@ -34,3 +34,7 @@ Pattern: `http://kratos.365.co.za:9001/getresultsbycompidanddaterange/[PID]/[DAT
 * 242: European Champion Cup
 * 243: European Challenge Cup
 * 303: Currie Cup Premier
+
+## License
+
+MIT
