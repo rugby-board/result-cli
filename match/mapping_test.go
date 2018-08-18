@@ -21,7 +21,7 @@ func TestInvalidEvent(t *testing.T) {
 
 func TestListEvents(t *testing.T) {
 	events := ListEvents()
-	if len(events) != 5 {
+	if len(events) != 14 {
 		t.Error("Test events failed")
 	}
 }
