@@ -14,6 +14,7 @@ import (
 var (
 	eventID    int
 	daysBefore int
+	listEvents bool
 )
 
 const defaultConfFile = "conf/conf.yaml"
@@ -21,6 +22,7 @@ const defaultConfFile = "conf/conf.yaml"
 func main() {
 	flag.IntVar(&eventID, "id", 0, "Event ID for Kratos")
 	flag.IntVar(&daysBefore, "days", 7, "Days before")
+	flag.BoolVar(&listEvents, "list-events", false, "List events")
 	flag.Usage = usage
 	flag.Parse()
 
@@ -28,7 +30,11 @@ func main() {
 	r.Init(defaultConfFile)
 	realEventID := int32(eventID)
 	dateStart, dateEnd := getDate(daysBefore)
-	if match.ValidEvent(realEventID) {
+	if listEvents {
+		for _, event := range match.ListEvents() {
+			fmt.Println(event)
+		}
+	} else if match.ValidEvent(realEventID) {
 		fmt.Printf("Event ID: %d, From %d days before:\n\n", realEventID, daysBefore)
 		fmt.Printf("Fetching...\n\n")
 		m, _ := r.Retrieve(realEventID, dateStart, dateEnd)
@@ -70,5 +76,5 @@ func usage() {
 }
 
 func version() string {
-	return "1.2.1"
+	return "1.3.0"
 }
