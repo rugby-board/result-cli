@@ -1,5 +1,7 @@
 package match
 
+import "fmt"
+
 const (
 	// InternationalTests ...
 	InternationalTests = 3
@@ -31,37 +33,34 @@ const (
 	CurrieCupPremier = 303
 )
 
+var matchEvents = map[int32]string{
+	InternationalTests:   "International Tests",
+	Premiership:          "Premiership",
+	Top14:                "Top14",
+	Pro14:                "Pro14",
+	SuperRugby:           "Super Rugby",
+	AngloWelshCup:        "Anglo Welsh Cup",
+	Mitre10Cup:           "Mitre10 Cup",
+	SixNations:           "Six Nations",
+	RugbyWorldCup:        "Rugby World Cup",
+	TheRugbyChampionship: "The Rugby Championship",
+	BritishAndIrishLions: "British & Irish Lions",
+	EuropeanChampionCup:  "European Champion Cup",
+	EuropeanChallengeCup: "European Challenge Cup",
+	CurrieCupPremier:     "Currie Cup Premier",
+}
+
 // ValidEvent ...
 func ValidEvent(eventID int32) bool {
-	if eventID == InternationalTests {
-		return true
-	} else if eventID == Premiership {
-		return true
-	} else if eventID == Top14 {
-		return true
-	} else if eventID == Pro14 {
-		return true
-	} else if eventID == SuperRugby {
-		return true
-	} else if eventID == AngloWelshCup {
-		return true
-	} else if eventID == Mitre10Cup {
-		return true
-	} else if eventID == SixNations {
-		return true
-	} else if eventID == RugbyWorldCup {
-		return true
-	} else if eventID == TheRugbyChampionship {
-		return true
-	} else if eventID == BritishAndIrishLions {
-		return true
-	} else if eventID == EuropeanChampionCup {
-		return true
-	} else if eventID == EuropeanChallengeCup {
-		return true
-	} else if eventID == CurrieCupPremier {
-		return true
-	}
+	_, ok := matchEvents[eventID]
+	return ok
+}
 
-	return false
+// ListEvents ...
+func ListEvents() []string {
+	events := make([]string, 0)
+	for eventID, name := range matchEvents {
+		events = append(events, fmt.Sprintf("%d: %s", eventID, name))
+	}
+	return events
 }
