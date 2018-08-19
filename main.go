@@ -56,7 +56,12 @@ func main() {
 		}
 		cmd.OutputMarkdownTable(m)
 	} else {
-		fmt.Println("Invalid event ID")
+		if realEventID > 0 {
+			fmt.Println("Invalid event ID.")
+			fmt.Println("Use -list-events to show all IDs.")
+		} else {
+			usage()
+		}
 	}
 }
 
@@ -72,7 +77,7 @@ func usage() {
 	fmt.Printf("result-cli v%s\n", version())
 	fmt.Println("Rugby match result retriever")
 	fmt.Println("")
-	fmt.Println("result-cli -id=[EVENT_ID] -days=[DAYS]")
+	fmt.Println("result-cli -id=[EVENT_ID] -days=[DAYS] (-list-events)")
 }
 
 func version() string {
