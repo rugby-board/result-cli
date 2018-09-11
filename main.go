@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/fatih/color"
 	"github.com/rugby-board/go-rugby-dict/dict"
 	"github.com/rugby-board/result-cli/cmd"
 	"github.com/rugby-board/result-cli/match"
@@ -81,7 +82,14 @@ func retrieveResults(realEventID int32, dateStart, dateEnd string) {
 			item.Team2Name = fmt.Sprintf("%s %s", trans, item.Team2Name)
 		}
 	}
-	cmd.OutputMarkdownTable(m)
+	if m != nil && len(m) != 0 {
+		cmd.OutputMarkdownTable(m)
+	} else {
+		color.Set(color.FgYellow)
+		fmt.Println("No match result found.")
+		color.Unset()
+	}
+	fmt.Println("")
 }
 
 func getDate(daysBefore int) (string, string) {
