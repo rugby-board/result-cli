@@ -1,7 +1,5 @@
 package match
 
-import "fmt"
-
 const (
 	// InternationalTests ...
 	InternationalTests = 3
@@ -33,6 +31,12 @@ const (
 	CurrieCupPremier = 303
 )
 
+// Event of a tournament
+type Event struct {
+	ID   int32
+	Name string
+}
+
 var matchEvents = map[int32]string{
 	InternationalTests:   "International Tests",
 	Premiership:          "Premiership",
@@ -57,10 +61,10 @@ func ValidEvent(eventID int32) bool {
 }
 
 // ListEvents ...
-func ListEvents() []string {
-	events := make([]string, 0)
+func ListEvents() []Event {
+	events := make([]Event, 0)
 	for eventID, name := range matchEvents {
-		events = append(events, fmt.Sprintf("%d: %s", eventID, name))
+		events = append(events, Event{ID: eventID, Name: name})
 	}
 	return events
 }

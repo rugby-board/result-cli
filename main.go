@@ -15,46 +15,48 @@ var (
 	eventID    int
 	daysBefore int
 	listEvents bool
+	iterEvents bool
 )
 
 const defaultConfFile = "conf/conf.yaml"
+
+var (
+	r *retriever.Retriever
+	d *dict.Dict
+)
 
 func main() {
 	flag.IntVar(&eventID, "id", 0, "Event ID for Kratos")
 	flag.IntVar(&daysBefore, "days", 7, "Days before")
 	flag.BoolVar(&listEvents, "list-events", false, "List events")
+	flag.BoolVar(&iterEvents, "iter-events", false, "Iterate events")
 	flag.Usage = usage
 	flag.Parse()
 
-	r := retriever.NewRetriever()
-	r.Init(defaultConfFile)
+	r = retriever.NewRetriever()
+	if r.Init(defaultConfFile) != nil {
+		fmt.Println("init retriever failed")
+		return
+	}
+
+	d = dict.NewDefaultDict()
+	if d.Load() != nil {
+		fmt.Println("load dict failed")
+		return
+	}
+
 	realEventID := int32(eventID)
 	dateStart, dateEnd := getDate(daysBefore)
 	if listEvents {
 		for _, event := range match.ListEvents() {
 			fmt.Println(event)
 		}
+	} else if iterEvents {
+		for _, event := range match.ListEvents() {
+			retrieveResults(event.ID, dateStart, dateEnd)
+		}
 	} else if match.ValidEvent(realEventID) {
-		fmt.Printf("Event ID: %d, From %d days before:\n\n", realEventID, daysBefore)
-		fmt.Printf("Fetching...\n\n")
-		m, _ := r.Retrieve(realEventID, dateStart, dateEnd)
-		d := dict.NewDefaultDict()
-		err := d.Load()
-		if err != nil {
-			fmt.Println("Load dict failed")
-		}
-		var trans string
-		for _, item := range m {
-			trans, err = d.Query(item.Team1Name)
-			if err == nil {
-				item.Team1Name = fmt.Sprintf("%s %s", trans, item.Team1Name)
-			}
-			trans, err = d.Query(item.Team2Name)
-			if err == nil {
-				item.Team2Name = fmt.Sprintf("%s %s", trans, item.Team2Name)
-			}
-		}
-		cmd.OutputMarkdownTable(m)
+		retrieveResults(realEventID, dateStart, dateEnd)
 	} else {
 		if realEventID > 0 {
 			fmt.Println("Invalid event ID.")
@@ -63,6 +65,23 @@ func main() {
 			usage()
 		}
 	}
+}
+
+func retrieveResults(realEventID int32, dateStart, dateEnd string) {
+	fmt.Printf("Event ID: %d, From %d days before:\n\n", realEventID, daysBefore)
+	fmt.Printf("Fetching...\n\n")
+	m, _ := r.Retrieve(realEventID, dateStart, dateEnd)
+	for _, item := range m {
+		trans, err := d.Query(item.Team1Name)
+		if err == nil {
+			item.Team1Name = fmt.Sprintf("%s %s", trans, item.Team1Name)
+		}
+		trans, err = d.Query(item.Team2Name)
+		if err == nil {
+			item.Team2Name = fmt.Sprintf("%s %s", trans, item.Team2Name)
+		}
+	}
+	cmd.OutputMarkdownTable(m)
 }
 
 func getDate(daysBefore int) (string, string) {
