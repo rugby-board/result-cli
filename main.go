@@ -96,7 +96,7 @@ func usage() {
 	fmt.Printf("result-cli v%s\n", version())
 	fmt.Println("Rugby match result retriever")
 	fmt.Println("")
-	fmt.Println("result-cli -id=[EVENT_ID] -days=[DAYS] (-list-events)")
+	fmt.Println("result-cli -id=[EVENT_ID] -days=[DAYS] (-list-events) (-iter-events)")
 }
 
 func version() string {
