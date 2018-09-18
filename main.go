@@ -83,6 +83,9 @@ func retrieveResults(realEventID int32, dateStart, dateEnd string) {
 		}
 	}
 	if m != nil && len(m) != 0 {
+		color.Set(color.FgGreen)
+		fmt.Printf("Results:\n\tFirst game date: %s\n\n", m[0].GameDate)
+		color.Unset()
 		cmd.OutputMarkdownTable(m)
 	} else {
 		color.Set(color.FgYellow)
