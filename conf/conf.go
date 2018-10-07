@@ -12,7 +12,8 @@ import (
 
 // Body ...
 type Body struct {
-	BaseURL string `yaml:"base_url"`
+	PlanetRugbyURL string `yaml:"planet_rugby_url"`
+	RugbyComAuURL  string `yaml:"rugby_com_au_url"`
 }
 
 const (

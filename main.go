@@ -3,6 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/fatih/color"
@@ -15,6 +17,7 @@ import (
 var (
 	eventID    int
 	daysBefore int
+	round      int
 	listEvents bool
 	iterEvents bool
 )
@@ -22,23 +25,20 @@ var (
 const defaultConfFile = "conf/conf.yaml"
 
 var (
-	r *retriever.Retriever
-	d *dict.Dict
+	planetRugbyRetriever = &retriever.PlanetRugbyRetriever{}
+	rugbyComAuRetriever  = &retriever.RugbyComAuRetriever{}
+	r                    retriever.Retriever
+	d                    *dict.Dict
 )
 
 func main() {
 	flag.IntVar(&eventID, "id", 0, "Event ID for Kratos")
 	flag.IntVar(&daysBefore, "days", 7, "Days before")
+	flag.IntVar(&round, "round", 6, "Round of game")
 	flag.BoolVar(&listEvents, "list-events", false, "List events")
 	flag.BoolVar(&iterEvents, "iter-events", false, "Iterate events")
 	flag.Usage = usage
 	flag.Parse()
-
-	r = retriever.NewRetriever()
-	if r.Init(defaultConfFile) != nil {
-		fmt.Println("init retriever failed")
-		return
-	}
 
 	d = dict.NewDefaultDict()
 	if d.Load() != nil {
@@ -54,10 +54,11 @@ func main() {
 		}
 	} else if iterEvents {
 		for _, event := range match.ListEvents() {
-			retrieveResults(event.ID, dateStart, dateEnd)
+			retrieveResults(event, dateStart, dateEnd)
 		}
 	} else if match.ValidEvent(realEventID) {
-		retrieveResults(realEventID, dateStart, dateEnd)
+		event, _ := match.GetEvent(realEventID)
+		retrieveResults(*event, dateStart, dateEnd)
 	} else {
 		if realEventID > 0 {
 			fmt.Println("Invalid event ID.")
@@ -68,10 +69,27 @@ func main() {
 	}
 }
 
-func retrieveResults(realEventID int32, dateStart, dateEnd string) {
-	fmt.Printf("Event ID: %d, From %d days before:\n\n", realEventID, daysBefore)
+func retrieveResults(event match.Event, dateStart, dateEnd string) {
+	fmt.Printf("Event ID: %d, From %d days before:\n\n", event.ID, daysBefore)
 	fmt.Printf("Fetching...\n\n")
-	m, _ := r.Retrieve(realEventID, dateStart, dateEnd)
+	if event.Type == match.RugbyComAu {
+		r = rugbyComAuRetriever
+	} else {
+		r = planetRugbyRetriever
+	}
+
+	if r.Init(defaultConfFile) != nil {
+		fmt.Println("Init retriever failed")
+		return
+	}
+	var m []*match.Match
+	if event.Type == match.RugbyComAu {
+		tempDates := strings.Split(dateStart, "-")
+		year, _ := strconv.Atoi(tempDates[0])
+		m, _ = r.Retrieve(event.ID, fmt.Sprintf("%d", year+1), strconv.Itoa(round))
+	} else {
+		m, _ = r.Retrieve(event.ID, dateStart, dateEnd)
+	}
 	for _, item := range m {
 		trans, err := d.Query(item.Team1Name)
 		if err == nil {
@@ -111,5 +129,5 @@ func usage() {
 }
 
 func version() string {
-	return "1.4.0"
+	return "1.5.0"
 }

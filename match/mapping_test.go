@@ -21,7 +21,18 @@ func TestInvalidEvent(t *testing.T) {
 
 func TestListEvents(t *testing.T) {
 	events := ListEvents()
-	if len(events) != 14 {
+	if len(events) != 15 {
 		t.Error("Test events failed")
+	}
+}
+
+func TestGetEvent(t *testing.T) {
+	_, ok := GetEvent(777)
+	if ok {
+		t.Error("No event 777")
+	}
+	event, _ := GetEvent(247)
+	if event.Type != RugbyComAu {
+		t.Error("Event type error")
 	}
 }

@@ -11,7 +11,7 @@ func TestGetConf(t *testing.T) {
 	if err != nil {
 		t.Error("Get conf file failed")
 	}
-	if c.BaseURL != "http://kratos.365.co.za:9001/getresultsbycompidanddaterange/%d/%s/%s" {
+	if c.PlanetRugbyURL != "http://kratos.365.co.za:9001/getresultsbycompidanddaterange/%d/%s/%s" {
 		t.Error("Base url test failed")
 	}
 }
