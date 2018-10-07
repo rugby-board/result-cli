@@ -34,7 +34,7 @@ var (
 func main() {
 	flag.IntVar(&eventID, "id", 0, "Event ID for Kratos")
 	flag.IntVar(&daysBefore, "days", 7, "Days before")
-	flag.IntVar(&round, "round", 6, "Round of game")
+	flag.IntVar(&round, "round", 1, "Round of game")
 	flag.BoolVar(&listEvents, "list-events", false, "List events")
 	flag.BoolVar(&iterEvents, "iter-events", false, "Iterate events")
 	flag.Usage = usage
