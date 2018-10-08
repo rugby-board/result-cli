@@ -11,14 +11,15 @@ It is rather simple by now, only allows query with EventID for results from last
 
 ```shell
 go get github.com/rugby-board/result-cli
+# Need days, default 7
 result-cli -id=209 -days=3
+# NRC need `round`
+result-cli -id=247 -round=1
 ```
 
-## API
+## PID Mapping
 
-Pattern: `http://kratos.365.co.za:9001/getresultsbycompidanddaterange/[PID]/[DATE-START]/[DATE-END]`
-
-### PID Mapping
+### From planetrugby.com
 
 * 3: International Tests
 * 201: Premiership
@@ -34,6 +35,10 @@ Pattern: `http://kratos.365.co.za:9001/getresultsbycompidanddaterange/[PID]/[DAT
 * 242: European Champion Cup
 * 243: European Challenge Cup
 * 303: Currie Cup Premier
+
+### From rugby.com.au
+
+* 247: National Rugby Championship
 
 ## License
 
