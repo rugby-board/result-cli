@@ -4,6 +4,7 @@ go:
   - 1.10.x
 before_install:
   - go get -t -v ./...
+  - go get github.com/rugby-board/rugby-dict-data
 script:
   - ./test.sh
 after_success:
