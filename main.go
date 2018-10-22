@@ -70,8 +70,7 @@ func main() {
 }
 
 func retrieveResults(event match.Event, dateStart, dateEnd string) {
-	fmt.Printf("Event ID: %d, From %d days before:\n\n", event.ID, daysBefore)
-	fmt.Printf("Fetching...\n\n")
+	fmt.Printf("Event ID: %d, From %d days before: Fetching...\n\n", event.ID, daysBefore)
 	if event.Type == match.RugbyComAu {
 		r = rugbyComAuRetriever
 	} else {
