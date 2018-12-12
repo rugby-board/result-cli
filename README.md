@@ -7,10 +7,15 @@ Rugby match result retriever in Go.
 
 It is rather simple by now, only allows query with EventID for results from last week, and output in Markdown table format.
 
-## Usage
+## Installation
 
 ```shell
 go get github.com/rugby-board/result-cli
+```
+
+## Usage
+
+```shell
 # Need days, default 7
 result-cli -id=209 -days=3
 # NRC need `round`
