@@ -15,6 +15,10 @@ go get github.com/rugby-board/result-cli
 result-cli -id=209 -days=3
 # NRC need `round`
 result-cli -id=247 -round=1
+# Show all events info
+result-cli -list-events
+# Check all events
+result-cli -iter-events
 ```
 
 ## PID Mapping
