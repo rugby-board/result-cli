@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/briandowns/spinner"
 	"github.com/fatih/color"
 	"github.com/rugby-board/go-rugby-dict/dict"
 	"github.com/rugby-board/result-cli/cmd"
@@ -70,10 +71,12 @@ func main() {
 }
 
 func retrieveResults(event match.Event, dateStart, dateEnd string) {
+	s := spinner.New(spinner.CharSets[14], 100*time.Millisecond)
 	color.Set(color.FgGreen)
 	fmt.Println(event.Name)
 	color.Unset()
 	fmt.Printf("Event ID: %d, From %d days before: Fetching...\n\n", event.ID, daysBefore)
+	s.Start()
 	if event.Type == match.RugbyComAu {
 		r = rugbyComAuRetriever
 	} else {
@@ -92,6 +95,7 @@ func retrieveResults(event match.Event, dateStart, dateEnd string) {
 	} else {
 		m, _ = r.Retrieve(event.ID, dateStart, dateEnd)
 	}
+	s.Stop()
 	for _, item := range m {
 		trans, err := d.Query(item.Team1Name)
 		if err == nil {
