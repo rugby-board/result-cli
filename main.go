@@ -1,10 +1,15 @@
 package main
 
 import (
+	"bytes"
 	"flag"
 	"fmt"
+	"io"
+	"log"
+	"os"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/briandowns/spinner"
@@ -12,6 +17,7 @@ import (
 	"github.com/rugby-board/go-rugby-dict/dict"
 	"github.com/rugby-board/result-cli/cmd"
 	"github.com/rugby-board/result-cli/match"
+	"github.com/rugby-board/result-cli/publish"
 	"github.com/rugby-board/result-cli/retriever"
 )
 
@@ -21,6 +27,7 @@ var (
 	round      int
 	listEvents bool
 	iterEvents bool
+	isPublish  bool
 )
 
 const defaultConfFile = "conf/conf.yaml"
@@ -38,6 +45,7 @@ func main() {
 	flag.IntVar(&round, "round", 1, "Round of game")
 	flag.BoolVar(&listEvents, "list-events", false, "List events")
 	flag.BoolVar(&iterEvents, "iter-events", false, "Iterate events")
+	flag.BoolVar(&isPublish, "publish", false, "Publish if confirmed")
 	flag.Usage = usage
 	flag.Parse()
 
@@ -59,7 +67,15 @@ func main() {
 		}
 	} else if match.ValidEvent(realEventID) {
 		event, _ := match.GetEvent(realEventID)
-		retrieveResults(*event, dateStart, dateEnd)
+		m := retrieveResults(*event, dateStart, dateEnd)
+		if m != nil && len(m) > 0 {
+			fmt.Println("Publish to Rugby Board? [y/n]")
+			var input string
+			fmt.Scanln(&input)
+			if input == "y" {
+				publishResult(*event, m)
+			}
+		}
 	} else {
 		if realEventID > 0 {
 			fmt.Println("Invalid event ID.")
@@ -70,7 +86,22 @@ func main() {
 	}
 }
 
-func retrieveResults(event match.Event, dateStart, dateEnd string) {
+func publishResult(event match.Event, matchResult []*match.Match) error {
+	publisher := publish.NewPublisher()
+	publisher.Init()
+	output := captureOutput(func() {
+		cmd.OutputMarkdownTable(matchResult)
+	})
+	err := publisher.Publish(event.Name, output, match.GetEventIDofRNB(event.ID))
+	if err != nil {
+		fmt.Println("Publish failed.")
+		return err
+	}
+	fmt.Println("Published.")
+	return nil
+}
+
+func retrieveResults(event match.Event, dateStart, dateEnd string) []*match.Match {
 	s := spinner.New(spinner.CharSets[14], 100*time.Millisecond)
 	color.Set(color.FgGreen)
 	fmt.Println(event.Name)
@@ -85,7 +116,7 @@ func retrieveResults(event match.Event, dateStart, dateEnd string) {
 
 	if r.Init(defaultConfFile) != nil {
 		fmt.Println("Init retriever failed")
-		return
+		return nil
 	}
 	var m []*match.Match
 	if event.Type == match.RugbyComAu {
@@ -117,6 +148,7 @@ func retrieveResults(event match.Event, dateStart, dateEnd string) {
 		color.Unset()
 	}
 	fmt.Println("")
+	return m
 }
 
 func getDate(daysBefore int) (string, string) {
@@ -136,4 +168,34 @@ func usage() {
 
 func version() string {
 	return "1.6.0"
+}
+
+func captureOutput(f func()) string {
+	reader, writer, err := os.Pipe()
+	if err != nil {
+		panic(err)
+	}
+	stdout := os.Stdout
+	stderr := os.Stderr
+	defer func() {
+		os.Stdout = stdout
+		os.Stderr = stderr
+		log.SetOutput(os.Stderr)
+	}()
+	os.Stdout = writer
+	os.Stderr = writer
+	log.SetOutput(writer)
+	out := make(chan string)
+	wg := new(sync.WaitGroup)
+	wg.Add(1)
+	go func() {
+		var buf bytes.Buffer
+		wg.Done()
+		io.Copy(&buf, reader)
+		out <- buf.String()
+	}()
+	wg.Wait()
+	f()
+	writer.Close()
+	return <-out
 }

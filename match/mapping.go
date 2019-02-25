@@ -64,6 +64,32 @@ var matchEvents = map[int32]string{
 	NationalRugbyChampionship: "National Rugby Championship",
 }
 
+var eventIDofRNB = map[int32]int32{
+	InternationalTests:        1,
+	Premiership:               5,
+	Top14:                     6,
+	Pro14:                     7,
+	SuperRugby:                4,
+	AngloWelshCup:             17,
+	Mitre10Cup:                18,
+	SixNations:                2,
+	RugbyWorldCup:             9,
+	TheRugbyChampionship:      3,
+	BritishAndIrishLions:      10,
+	EuropeanChampionCup:       8,
+	EuropeanChallengeCup:      11,
+	CurrieCupPremier:          12,
+	NationalRugbyChampionship: 19,
+}
+
+// GetEventIDofRNB ...
+func GetEventIDofRNB(eventID int32) int32 {
+	if eventIDofRNB, ok := eventIDofRNB[eventID]; ok {
+		return eventIDofRNB
+	}
+	return -1
+}
+
 // ValidEvent ...
 func ValidEvent(eventID int32) bool {
 	_, ok := matchEvents[eventID]
