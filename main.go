@@ -167,7 +167,7 @@ func usage() {
 }
 
 func version() string {
-	return "1.6.0"
+	return "1.7.0"
 }
 
 func captureOutput(f func()) string {
