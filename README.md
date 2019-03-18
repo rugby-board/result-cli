@@ -1,29 +1,29 @@
-# result-cli
+# Rugby Result
 
 ![travis](https://travis-ci.org/rugby-board/result-cli.svg?branch=master)
 ![codecov](https://codecov.io/gh/rugby-board/result-cli/branch/master/graph/badge.svg)
 
-Rugby match result retriever in Go.
+Rugby match result CLI retriever in Go.
 
 It is rather simple by now, only allows query with EventID for results from last week, and output in Markdown table format.
 
 ## Installation
 
 ```shell
-go get github.com/rugby-board/result-cli
+go get github.com/rugby-board/rugby-result
 ```
 
 ## Usage
 
 ```shell
 # Need days, default 7
-result-cli -id=209 -days=3
+rugby-result -id=209 -days=3
 # NRC need `round`
-result-cli -id=247 -round=1
+rugby-result -id=247 -round=1
 # Show all events info
-result-cli -list-events
+rugby-result -list-events
 # Check all events
-result-cli -iter-events
+rugby-result -iter-events
 ```
 
 ## PID Mapping

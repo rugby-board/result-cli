@@ -3,7 +3,7 @@ package retriever
 import (
 	"net/http"
 
-	"github.com/rugby-board/result-cli/match"
+	"github.com/rugby-board/rugby-result/match"
 )
 
 // Retriever interface

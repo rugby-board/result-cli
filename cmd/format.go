@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/olekukonko/tablewriter"
-	"github.com/rugby-board/result-cli/match"
+	"github.com/rugby-board/rugby-result/match"
 )
 
 const maxColWidth = 120

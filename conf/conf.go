@@ -18,7 +18,7 @@ type Body struct {
 
 const (
 	// RepoPath Relative path of this repo
-	RepoPath = "github.com/rugby-board/result-cli"
+	RepoPath = "github.com/rugby-board/rugby-result"
 )
 
 // LoadEnvConfPath ...
@@ -32,7 +32,7 @@ func LoadEnvConfPath(confPath string) (string, error) {
 	return path, nil
 }
 
-// GetConf for result-cli
+// GetConf for rugby-result
 func GetConf(confPath string) (*Body, error) {
 	c := &Body{}
 	realConfPath, err := LoadEnvConfPath(confPath)

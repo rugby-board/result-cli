@@ -7,7 +7,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/rugby-board/result-cli/match"
+	"github.com/rugby-board/rugby-result/match"
 )
 
 // Reference: https://github.com/kami-zh/go-capturer/blob/master/main.go

@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/rugby-board/go-rugby-dict/dict"
-	"github.com/rugby-board/result-cli/match"
+	"github.com/rugby-board/rugby-result/match"
 )
 
 func TestVersion(t *testing.T) {

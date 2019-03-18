@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/rugby-board/result-cli/conf"
-	"github.com/rugby-board/result-cli/match"
+	"github.com/rugby-board/rugby-result/conf"
+	"github.com/rugby-board/rugby-result/match"
 )
 
 // RugbyComAuRetriever ...

@@ -15,10 +15,10 @@ import (
 	"github.com/briandowns/spinner"
 	"github.com/fatih/color"
 	"github.com/rugby-board/go-rugby-dict/dict"
-	"github.com/rugby-board/result-cli/cmd"
-	"github.com/rugby-board/result-cli/match"
-	"github.com/rugby-board/result-cli/publish"
-	"github.com/rugby-board/result-cli/retriever"
+	"github.com/rugby-board/rugby-result/cmd"
+	"github.com/rugby-board/rugby-result/match"
+	"github.com/rugby-board/rugby-result/publish"
+	"github.com/rugby-board/rugby-result/retriever"
 )
 
 var (
@@ -160,10 +160,10 @@ func getDate(daysBefore int) (string, string) {
 }
 
 func usage() {
-	fmt.Printf("result-cli v%s\n", version())
+	fmt.Printf("rugby-result v%s\n", version())
 	fmt.Println("Rugby match result retriever")
 	fmt.Println("")
-	fmt.Println("result-cli -id=[EVENT_ID] -days=[DAYS] -round=[ROUND] (-list-events) (-iter-events)")
+	fmt.Println("rugby-result -id=[EVENT_ID] -days=[DAYS] -round=[ROUND] (-list-events) (-iter-events)")
 }
 
 func version() string {
