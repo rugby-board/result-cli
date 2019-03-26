@@ -1,15 +1,10 @@
 package main
 
 import (
-	"bytes"
 	"flag"
 	"fmt"
-	"io"
-	"log"
-	"os"
 	"strconv"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/briandowns/spinner"
@@ -89,9 +84,7 @@ func main() {
 func publishResult(event match.Event, matchResult []*match.Match) error {
 	publisher := publish.NewPublisher()
 	publisher.Init()
-	output := captureOutput(func() {
-		cmd.OutputMarkdownTable(matchResult)
-	})
+	output := cmd.OutputMarkdownTable(matchResult)
 	err := publisher.Publish(event.Name, output, match.GetEventIDofRNB(event.ID))
 	if err != nil {
 		fmt.Println("Publish failed.")
@@ -141,7 +134,7 @@ func retrieveResults(event match.Event, dateStart, dateEnd string) []*match.Matc
 		color.Set(color.FgGreen)
 		fmt.Printf("Results:\n\tFirst game date: %s\n\n", m[0].GameDate)
 		color.Unset()
-		cmd.OutputMarkdownTable(m)
+		fmt.Println(cmd.OutputMarkdownTable(m))
 	} else {
 		color.Set(color.FgYellow)
 		fmt.Println("No match result found.")
@@ -168,34 +161,4 @@ func usage() {
 
 func version() string {
 	return "1.7.0"
-}
-
-func captureOutput(f func()) string {
-	reader, writer, err := os.Pipe()
-	if err != nil {
-		panic(err)
-	}
-	stdout := os.Stdout
-	stderr := os.Stderr
-	defer func() {
-		os.Stdout = stdout
-		os.Stderr = stderr
-		log.SetOutput(os.Stderr)
-	}()
-	os.Stdout = writer
-	os.Stderr = writer
-	log.SetOutput(writer)
-	out := make(chan string)
-	wg := new(sync.WaitGroup)
-	wg.Add(1)
-	go func() {
-		var buf bytes.Buffer
-		wg.Done()
-		io.Copy(&buf, reader)
-		out <- buf.String()
-	}()
-	wg.Wait()
-	f()
-	writer.Close()
-	return <-out
 }
