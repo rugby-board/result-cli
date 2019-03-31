@@ -63,7 +63,7 @@ func main() {
 	} else if match.ValidEvent(realEventID) {
 		event, _ := match.GetEvent(realEventID)
 		m := retrieveResults(*event, dateStart, dateEnd)
-		if m != nil && len(m) > 0 {
+		if isPublish && m != nil && len(m) > 0 {
 			fmt.Println("Publish to Rugby Board? [y/n]")
 			var input string
 			fmt.Scanln(&input)
