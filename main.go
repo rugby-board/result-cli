@@ -153,12 +153,11 @@ func getDate(daysBefore int) (string, string) {
 }
 
 func usage() {
-	fmt.Printf("rugby-result v%s\n", version())
-	fmt.Println("Rugby match result retriever")
-	fmt.Println("")
-	fmt.Println("rugby-result -id=[EVENT_ID] -days=[DAYS] -round=[ROUND] (-list-events) (-iter-events)")
+	fmt.Printf("rugby-result v%s %s\n\n", version(), "- Rugby match result retriever")
+	fmt.Println("Usage:")
+	fmt.Println("\trugby-result -id=[EVENT_ID] (-publish) -days=[DAYS] -round=[ROUND] (-list-events) (-iter-events)")
 }
 
 func version() string {
-	return "1.7.0"
+	return "1.8.0"
 }
