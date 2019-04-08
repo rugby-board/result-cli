@@ -99,7 +99,7 @@ func retrieveResults(event match.Event, dateStart, dateEnd string) []*match.Matc
 	color.Set(color.FgGreen)
 	fmt.Println(event.Name)
 	color.Unset()
-	fmt.Printf("Event ID: %d, From %d days before: Fetching...\n\n", event.ID, daysBefore)
+	fmt.Printf("-> Event ID: %d, From %d days before\n", event.ID, daysBefore)
 	s.Start()
 	if event.Type == match.RugbyComAu {
 		r = rugbyComAuRetriever
@@ -132,12 +132,12 @@ func retrieveResults(event match.Event, dateStart, dateEnd string) []*match.Matc
 	}
 	if m != nil && len(m) != 0 {
 		color.Set(color.FgGreen)
-		fmt.Printf("Results:\n\tFirst game date: %s\n\n", m[0].GameDate)
+		fmt.Printf("-> Game date: %s\n\n", m[0].GameDate)
 		color.Unset()
 		fmt.Println(cmd.OutputMarkdownTable(m))
 	} else {
 		color.Set(color.FgYellow)
-		fmt.Println("No match result found.")
+		fmt.Println("-> No match result found.")
 		color.Unset()
 	}
 	fmt.Println("")
